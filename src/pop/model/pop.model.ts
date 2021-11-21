@@ -23,6 +23,7 @@ export class Pop {
   @Column({
     nullable: false,
     default: 'global',
+    type: 'varchar',
     unique: true,
   })
   guild = 'global'
