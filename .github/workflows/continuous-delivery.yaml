@@ -1,0 +1,27 @@
+name: continuous delivery
+
+on:
+  workflow_run:
+    workflows: ["continuous integration"]
+    branches:
+      - develop
+    types:
+      - completed
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build and push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: jojoee/popkitty-backend
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
