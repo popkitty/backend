@@ -14,7 +14,7 @@ on:
 
 jobs:
   setup:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version:
@@ -49,14 +49,14 @@ jobs:
         run: npm ci
 
   lint:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     needs: [setup]
     steps:
       - name: Linting with ESLint
         run: npm run lint
 
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     needs: [setup]
     steps:
       - name: Test and test coverage
@@ -67,7 +67,7 @@ jobs:
         run: echo "push test coverage report"
 
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     needs: [setup]
     steps:
       - name: Build testing
