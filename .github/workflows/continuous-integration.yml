@@ -13,12 +13,14 @@ on:
       - production
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  setup:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         node-version:
           - 16.x
+        os:
+          - ubuntu-20.04
 
     steps:
       - name: Checkout
@@ -46,13 +48,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+  lint:
+    runs-on: ${{ matrix.os }}
+    needs: [setup]
+    steps:
       - name: Linting with ESLint
         run: npm run lint
 
+  test:
+    runs-on: ${{ matrix.os }}
+    needs: [setup]
+    steps:
       - name: Test and test coverage
         run: npm run test:cov
 
       # TODO: upload report to hosting
+      - name: Create and push the test coverage report
+        run: echo "push test coverage report"
 
+  build:
+    runs-on: ${{ matrix.os }}
+    needs: [setup]
+    steps:
       - name: Build testing
         run: npm run build
