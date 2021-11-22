@@ -13,8 +13,8 @@ on:
       - production
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
+  verify:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         node-version:
@@ -48,17 +48,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-  lint:
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
       - name: Linting with ESLint
         run: npm run lint
 
-  test:
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
       - name: Test and test coverage
         run: npm run test:cov
 
@@ -66,9 +58,5 @@ jobs:
       - name: Create and push the test coverage report
         run: echo "push test coverage report"
 
-  build:
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
       - name: Build testing
         run: npm run build
